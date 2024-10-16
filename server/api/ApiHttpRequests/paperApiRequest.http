@@ -1,0 +1,40 @@
+### Create a new paper
+POST http://localhost:5139/api/Paper
+Content-Type: application/json
+
+{
+  "name": "lorte paper",
+  "discontinued": true,
+  "stock": 200,
+  "price": 10.20
+}
+
+### Update an existing paper
+PUT http://localhost:5139/api/Paper/4
+Content-Type: application/json
+
+{
+  "id": 4,
+  "name": "Updated Paper",
+  "discontinued": false,
+  "price": 12.0,
+  "stock": 150
+}
+
+### Delete a paper
+DELETE http://localhost:5139/api/Paper/1
+
+
+### Get all papers
+GET http://localhost:5139/api/Paper
+
+
+### Add traits to paper
+POST http://localhost:5139/api/Paper/4/traits
+Content-Type: application/json
+
+{
+  "paperId": 4,
+  "traitIds": [2, 5, 6]
+}
+

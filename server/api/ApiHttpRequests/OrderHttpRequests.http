@@ -1,0 +1,66 @@
+﻿### Create a new order
+POST http://localhost:5139/api/order
+Content-Type: application/json
+
+{
+  "orderDate": "2023-10-01T00:00:00Z",
+  "deliveryDate": "2023-10-05",
+  "status": "Test",
+  "totalAmount": 100.50,
+  "customerId": 1,
+  "orderEntries": [
+    {
+      "productId": 1,
+      "quantity": 10
+    },
+    {
+      "productId": 2,
+      "quantity": 5
+    }
+  ]
+}
+
+### Get order history for a customer
+GET http://localhost:5139/api/order/customer/1/history
+Content-Type: application/json
+
+### Get all orders from database
+GET http://localhost:5139/api/order
+
+### Update an order by its id
+PUT http://localhost:5139/api/Order/11
+Content-Type: application/json
+
+{
+  "orderDate": "2023-10-01T00:00:00Z",
+  "deliveryDate": "2023-10-05",
+  "status": "Shipped",
+  "totalAmount": 150.75,
+  "customerId": 1,
+  "orderEntries": [
+    {
+      "productId": 1,
+      "quantity": 30
+    },
+    {
+      "productId": 2,
+      "quantity": 30
+    }
+  ]
+}
+
+### Delete an order by its id 
+DELETE http://localhost:5139/api/order/1
+Content-Type: application/json
+
+### Update the status of an order by its id
+PATCH http://localhost:5139/api/order/8/status
+Content-Type: application/json
+
+{
+  "status": "Shipped"
+}
+
+### Get all order entries
+GET http://localhost:5139/api/order/entries
+Content-Type: application/json
