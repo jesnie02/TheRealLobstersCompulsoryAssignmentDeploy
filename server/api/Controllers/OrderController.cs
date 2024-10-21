@@ -17,7 +17,7 @@ namespace api.Controllers
         }
 
         /// <summary>
-        /// jubiii
+        /// jubii
         /// </summary>
         /// <param name="createOrderDto"></param>
         /// <returns></returns>
