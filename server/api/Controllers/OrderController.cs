@@ -16,6 +16,11 @@ namespace api.Controllers
             _orderService = orderService;
         }
 
+        /// <summary>
+        /// jubiii
+        /// </summary>
+        /// <param name="createOrderDto"></param>
+        /// <returns></returns>
         // Creates a new order
         [HttpPost]
         public async Task<ActionResult<OrderDto>> CreateOrderAsync(OrderDto createOrderDto)
