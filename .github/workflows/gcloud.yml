@@ -28,7 +28,7 @@ jobs:
 
       - name: Authenticate Docker to GCP
         run: |
-          gcloud auth configure-docker europe-west1-docker.pkg.dev
+          gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://europe-west1-docker.pkg.dev
 
       - name: Build Docker image
         run: |
