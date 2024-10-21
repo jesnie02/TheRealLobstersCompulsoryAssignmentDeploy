@@ -10,6 +10,7 @@ using dataAccess.Repositories;
 using FluentValidation;
 using service.Validators;
 using api.Middleware;
+using Npgsql;
 
 public class Program
 {
@@ -43,23 +44,42 @@ public class Program
         builder.Services.AddValidatorsFromAssemblyContaining<OrderDtoValidator>();
         builder.Services.AddValidatorsFromAssemblyContaining<TraitDtoValidator>();
 
-        builder.Services.AddDbContext<MyDbContext>(Options =>
+        builder.Services.AddDbContext<MyDbContext>(options =>
         {
-            Options.UseNpgsql(Environment.GetEnvironmentVariable("DB") ?? builder.Configuration.GetConnectionString("MyDbConn"));
+
+            // Google Cloud SQL miljø variabler
+            var cloudSqlConnectionName = Environment.GetEnvironmentVariable("CLOUD_SQL_CONNECTION_NAME");
+            var dbUser = Environment.GetEnvironmentVariable("DB_USER");
+            var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
+            var dbName = Environment.GetEnvironmentVariable("DB_NAME");
     
+            // Lav Cloud SQL connection string
+            var cloudSqlConnectionString = !string.IsNullOrEmpty(cloudSqlConnectionName) && 
+                                           !string.IsNullOrEmpty(dbUser) && 
+                                           !string.IsNullOrEmpty(dbPassword) && 
+                                           !string.IsNullOrEmpty(dbName)
+                ? new NpgsqlConnectionStringBuilder
+                {
+                    Host = $"/cloudsql/{cloudSqlConnectionName}",  // Cloud SQL socket
+                    Username = dbUser,
+                    Password = dbPassword,
+                    Database = dbName,
+                    SslMode = SslMode.Disable
+                }.ToString()
+                : null;
+    
+            var connectionString = cloudSqlConnectionString ?? builder.Configuration.GetConnectionString("MyDbConn");
+    
+            options.UseNpgsql(connectionString);
         });
 
 
         var app = builder.Build();
 
 
-        using (var scope = app.Services.CreateScope())
-        {
-            var dbContext = scope.ServiceProvider.GetRequiredService<MyDbContext>();
-            dbContext.Database.EnsureCreated();
-        }
+      
 
-app.UseMiddleware<RequestLoggingMiddleware>();
+		app.UseMiddleware<RequestLoggingMiddleware>();
 
         app.MapControllers();
         app.UseOpenApi();
@@ -73,7 +93,9 @@ app.UseMiddleware<RequestLoggingMiddleware>();
 
 
 
-        app.Run();
+       var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+		var url = $"http://0.0.0.0:{port}";
+		app.Run(url);
     }
 }
 
