@@ -23,13 +23,16 @@ jobs:
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
-          project_id: ${{ secrets.GCLOUD_PROJECT_ID }}
+          project_id: paper-lobster
           install_components: 'beta'
 
       - name: Authenticate Docker to GCP
         run: |
-          gcloud auth configure-docker europe-west1-docker.pkg.dev
+          echo ${GCLOUD_SA_KEY} | docker login -u _json_key --password-stdin https://europe-west1-docker.pkg.dev/
 
+      - name: Print Docker Info
+        run: docker info
+        
       - name: Build Docker image
         run: |
           docker build -t europe-west1-docker.pkg.dev/paper-lobster/paper-shop-repo/paper-shop-api-server:latest -f server/api/Dockerfile .
