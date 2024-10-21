@@ -28,7 +28,7 @@ jobs:
 
       - name: Authenticate Docker to GCP
         run: |
-          gcloud auth configure-docker gcr.io
+          gcloud auth configure-docker eu.gcr.io
 
       - name: Build Docker image
         run: |
