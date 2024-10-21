@@ -3,8 +3,7 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'server/**'
+    
 
 jobs:
   deploy:
@@ -28,7 +27,7 @@ jobs:
 
       - name: Authenticate Docker to GCP
         run: |
-          echo ${GCLOUD_SA_KEY} | docker login -u _json_key --password-stdin https://europe-west1-docker.pkg.dev/
+          gcloud auth configure-docker europe-west1-docker.pkg.dev
 
       - name: Print Docker Info
         run: docker info
