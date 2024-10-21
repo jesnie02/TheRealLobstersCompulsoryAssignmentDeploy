@@ -32,11 +32,11 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t eu.gcr.io/${{ secrets.GCLOUD_PROJECT_ID }}/${{ secrets.GCLOUD_SERVICE_NAME }} -f server/api/Dockerfile .
+          docker build -t eu.gcr.io/${{ secrets.GCLOUD_PROJECT_ID }}/paper-shop-repo/${{ secrets.GCLOUD_SERVICE_NAME }} -f server/api/Dockerfile .
 
       - name: Push Docker image to Google Container Registry
         run: |
-          docker push eu.gcr.io/${{ secrets.GCLOUD_PROJECT_ID }}/${{ secrets.GCLOUD_SERVICE_NAME }}
+          docker push eu.gcr.io/${{ secrets.GCLOUD_PROJECT_ID }}/paper-shop-repo/${{ secrets.GCLOUD_SERVICE_NAME }}
 
       - name: Deploy to Cloud Run
         run: |
